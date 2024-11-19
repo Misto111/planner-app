@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -22,7 +23,7 @@ public class Task extends BaseEntity {
     private LocalDate dueDate;
 
     @ManyToOne
-    @Column(nullable = false)
+    @NotNull
     private Priority priority;
 
     @ManyToOne

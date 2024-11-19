@@ -19,7 +19,7 @@ public class Priority extends BaseEntity {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "priority")
     private Set<Task> tasks;
 
     public PriorityName getName() {
