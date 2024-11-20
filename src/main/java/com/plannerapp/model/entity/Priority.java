@@ -2,17 +2,14 @@ package com.plannerapp.model.entity;
 
 import com.plannerapp.model.enums.PriorityName;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import java.util.HashSet;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "priorities")
 public class Priority extends BaseEntity {
 
+    @Enumerated(EnumType.STRING)
     @Column(unique = true, nullable = false)
     private PriorityName name;
 
