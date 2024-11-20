@@ -17,8 +17,13 @@
 
         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
             <ul class="navbar-nav row">
+
+<!--                <li class="nav-item col-md-4">-->
+<!--                  <span th:text="${@loggedUser.username}"></span>-->
+<!--                </li>-->
+
                 <li class="nav-item col-md-4">
-                    <a class="nav-link active h5 my-text-color" href="/">Login</a>
+                    <a class="nav-link active h5 my-text-color" th:href="@{/login}">Login</a>
                 </li>
 
                 <li class="nav-item col-md-4">
@@ -26,7 +31,10 @@
                 </li>
 
                 <li class="nav-item col-md-4">
-                    <a class="nav-link my-text-color active h5 " href="/">Logout</a>
+                    <form th:action="@{/logout}" th:method="POST">
+                        <button type="submit" class="btn-link nav-link my-text-color active h5 logout">Logout</button>
+                    </form>
+
                 </li>
             </ul>
         </div>
@@ -35,7 +43,7 @@
 <footer class="footer bg-transparent  py-2">
     <div class="container-fluid text-center">
         <div class="footer-background h5 my-text-color fixed-bottom">
-            &copy; All rights reserved.
+            &copy;All rights reserved.
         </div>
     </div>
 </footer>

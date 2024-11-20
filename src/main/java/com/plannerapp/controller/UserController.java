@@ -1,5 +1,6 @@
 package com.plannerapp.controller;
 
+import com.plannerapp.model.dto.UserLoginDTO;
 import com.plannerapp.model.dto.UserRegisterDTO;
 import com.plannerapp.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -21,9 +22,28 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public ModelAndView login() {
+    public ModelAndView login(@Valid @ModelAttribute("userLoginDTO") UserLoginDTO userLoginDTO) {
         return new ModelAndView("login");
     }
+
+    @PostMapping("/login")
+    public ModelAndView login(@Valid @ModelAttribute("userLoginDTO") UserLoginDTO userLoginDTO,
+                              BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("login");
+        }
+
+        boolean hasSuccessfulLogin= userService.login(userLoginDTO);
+
+        if (!hasSuccessfulLogin) {
+            ModelAndView modelAndView = new ModelAndView("login");
+            modelAndView.addObject("hasLoginError", true);
+            return modelAndView;
+        }
+
+        return new ModelAndView("redirect:/home");
+    }
+
 
     @GetMapping("/register")
     public ModelAndView register(@ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO) {
@@ -33,7 +53,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ModelAndView register(@ModelAttribute("userRegisterDTO") @Valid UserRegisterDTO userRegisterDTO,
-            BindingResult bindingResult) {
+                                 BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return new ModelAndView("register");
@@ -48,5 +68,12 @@ public class UserController {
         }
 
         return new ModelAndView("redirect:/login");
+    }
+
+    @PostMapping("/logout")
+    public ModelAndView logout() {
+
+        this.userService.logout();
+        return new ModelAndView("redirect:/");
     }
 }
