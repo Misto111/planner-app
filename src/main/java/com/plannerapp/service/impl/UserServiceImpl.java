@@ -30,9 +30,11 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        UserEntity dbUserEntity = userRepository.findByUsername(userRegisterDTO.getUsername());
+        boolean existByUsernameOrEmail = userRepository.existsByUsernameOrEmail(
+                userRegisterDTO.getUsername(),
+                userRegisterDTO.getEmail());
 
-        if (dbUserEntity != null) {
+        if (existByUsernameOrEmail) {
             return false;
         }
 
