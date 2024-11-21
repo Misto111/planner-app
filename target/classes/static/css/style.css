@@ -79,3 +79,9 @@ footer {
     cursor: pointer;
     font-weight: 600;
 }
+
+.custom-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}

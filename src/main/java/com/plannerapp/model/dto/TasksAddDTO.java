@@ -4,7 +4,6 @@ import com.plannerapp.service.annotation.DateInFuture;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
 public class TasksAddDTO {
 
     @Size(min = 2, max = 50, message = "Description length must be between 2 and 50 characters!")

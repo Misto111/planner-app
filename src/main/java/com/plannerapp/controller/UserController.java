@@ -2,6 +2,7 @@ package com.plannerapp.controller;
 
 import com.plannerapp.model.dto.UserLoginDTO;
 import com.plannerapp.model.dto.UserRegisterDTO;
+import com.plannerapp.service.LoggedUser;
 import com.plannerapp.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,19 +17,29 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final LoggedUser loggedUser;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, LoggedUser loggedUser) {
         this.userService = userService;
+        this.loggedUser = loggedUser;
     }
 
     @GetMapping("/login")
     public ModelAndView login(@Valid @ModelAttribute("userLoginDTO") UserLoginDTO userLoginDTO) {
+        if (loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
+
         return new ModelAndView("login");
     }
 
     @PostMapping("/login")
     public ModelAndView login(@Valid @ModelAttribute("userLoginDTO") UserLoginDTO userLoginDTO,
                               BindingResult bindingResult) {
+        if (loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
+
         if (bindingResult.hasErrors()) {
             return new ModelAndView("login");
         }
@@ -47,6 +58,10 @@ public class UserController {
 
     @GetMapping("/register")
     public ModelAndView register(@ModelAttribute("userRegisterDTO") UserRegisterDTO userRegisterDTO) {
+        if (loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
+
         return new ModelAndView("register");
     }
 
@@ -54,6 +69,9 @@ public class UserController {
     @PostMapping("/register")
     public ModelAndView register(@ModelAttribute("userRegisterDTO") @Valid UserRegisterDTO userRegisterDTO,
                                  BindingResult bindingResult) {
+        if (loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
 
         if (bindingResult.hasErrors()) {
             return new ModelAndView("register");
@@ -72,6 +90,9 @@ public class UserController {
 
     @PostMapping("/logout")
     public ModelAndView logout() {
+        if (!loggedUser.isLogged()) {
+            return new ModelAndView("redirect:/home");
+        }
 
         this.userService.logout();
         return new ModelAndView("redirect:/");
